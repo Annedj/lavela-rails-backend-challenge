@@ -29,6 +29,8 @@ module LavelaHealthBackendTakehome
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.time_zone = "UTC"
+
     # Active Record Encryption for clients and providers data
     config.active_record.encryption.primary_key = Rails.application.credentials.active_record_encryption.primary_key
     config.active_record.encryption.deterministic_key = Rails.application.credentials.active_record_encryption.deterministic_key

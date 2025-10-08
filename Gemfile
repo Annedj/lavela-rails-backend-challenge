@@ -47,4 +47,7 @@ group :development, :test do
 
   # Faker for seeding data
   gem "faker", require: false
+
+  # Pry for debugging
+  gem 'pry'
 end
