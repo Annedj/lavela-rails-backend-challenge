@@ -13,12 +13,12 @@ Welcome! This repository is the starting point for a short backend exercise. The
 
 ## Getting Started
 
-1. Fork this repo. 
-1. Install dependencies: `bundle install`
-1. Create your database schema: add a migration that models the scheduling domain described below, then run `bin/rails db:setup`
-1. Run the test suite: `bin/rails test`
-
-Feel free to add seed data (`db/seeds.rb`) once your models are ready—it is currently empty on purpose.
+1. Fork this repo.
+2. Install dependencies: `bundle install`
+3. Create your database schema: add a migration that models the scheduling domain described below, then run `bin/rails db:setup`
+4. Run the test suite: `bin/rails test`
+5. Add seed data: `bin/rails db:reset`
+   Since AvailabilitySync#call is designed to be idempotent, we can run it multiple times without worrying about duplicates. However it depends on the provider_id, so we need to reset the database between seed runs.
 
 ## What You Need to Build
 

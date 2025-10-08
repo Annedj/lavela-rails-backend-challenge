@@ -1,8 +1,8 @@
 class Availability < ApplicationRecord
   belongs_to :provider
 
-  validates :start_day_of_week, presence: true
-  validates :end_day_of_week, presence: true
+  validates :start_day_of_week, presence: true, inclusion: { in: 0..6 }
+  validates :end_day_of_week, presence: true, inclusion: { in: 0..6 }
   validates :starts_at_time, presence: true
   validates :ends_at_time, presence: true
   validates :source, presence: true
