@@ -1,5 +1,16 @@
 # Lavela Health Backend Take-Home
 
+## Notes on the task
+
+- Clients and providers information (name and email) are encrypted using Active Record Encryption to mirror the future behaviour where all PHI data will be encrypted and kept separate in a different database.
+- Master key for these encryptions are stored in `config/credentials.yml.enc` and are decrypted using the `RAILS_MASTER_KEY` environment variable.
+- Time zone is set to UTC to avoid issues with timezone conversions.
+- Assumption is made that all availability slots in the `test/fixtures/files/calendly_slots.json` correspond to an appointment.
+- AvailabilitySync#call is designed to be idempotent, we can run it multiple times without worrying about duplicates.
+- However it depends on the provider_id, so we need to reset the database between seed runs to avoid duplicates. For this reason, we would rather use `bin/rails db:reset` to reset the database as written below.
+
+## Task Description
+
 Welcome! This repository is the starting point for a short backend exercise. The goal is to ingest third-party availability data and expose appointment booking endpoints on top of a small scheduling domain.
 
 ## Prerequisites
@@ -18,7 +29,6 @@ Welcome! This repository is the starting point for a short backend exercise. The
 3. Create your database schema: add a migration that models the scheduling domain described below, then run `bin/rails db:setup`
 4. Run the test suite: `bin/rails test`
 5. Add seed data: `bin/rails db:reset`
-   Since AvailabilitySync#call is designed to be idempotent, we can run it multiple times without worrying about duplicates. However it depends on the provider_id, so we need to reset the database between seed runs.
 
 ## What You Need to Build
 
