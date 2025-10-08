@@ -42,15 +42,3 @@ class AvailabilitySync
     DateAndTime::Calculations::DAYS_INTO_WEEK[day_of_week.to_sym]
   end
 end
-
-
-# [{"id" => "p1-slot-early-morning",
-#   "provider_id" => 1,
-#   "starts_at" => {"day_of_week" => "monday", "time" => "06:30"},
-#   "ends_at" => {"day_of_week" => "monday", "time" => "07:00"},
-#   "source" => "calendly"},
-#  {"id" => "p1-slot-morning-1",
-#   "provider_id" => 1,
-#   "starts_at" => {"day_of_week" => "monday", "time" => "09:00"},
-#   "ends_at" => {"day_of_week" => "monday", "time" => "09:30"},
-#   "source" => "calendly"},
