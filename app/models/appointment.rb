@@ -25,7 +25,7 @@ class Appointment < ApplicationRecord
   end
 
   def does_not_overlap_with_existing_appointment
-    if Appointment.scheduled.exists?(provider_id: provider_id, starts_at: starts_at..ends_at, ends_at: starts_at..ends_at)
+    if Appointment.scheduled.where.not(id: id).exists?(provider_id: provider_id, starts_at: starts_at..ends_at, ends_at: starts_at..ends_at)
       errors.add(:starts_at, "overlaps with an existing appointment for this provider")
     end
   end
