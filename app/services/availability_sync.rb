@@ -27,7 +27,6 @@ class AvailabilitySync
         ends_at_time: slot["ends_at"]["time"],
       )
       availability.save!
-      p availability if availability.errors.any?
     end
 
   rescue ProviderNotFoundError => e

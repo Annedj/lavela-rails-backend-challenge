@@ -49,5 +49,8 @@ group :development, :test do
   gem "faker", require: false
 
   # Pry for debugging
-  gem 'pry'
+  gem "pry"
+
+  # Factory Bot for testing
+  gem "factory_bot_rails"
 end

@@ -14,6 +14,7 @@ module Providers
           start_day_of_week: from.wday..to.wday,
           starts_at_time: from.strftime("%H:%M")..to.strftime("%H:%M")
         )
+
         render json: availabilities, status: :ok
       rescue ArgumentError => e
         render json: { error: "Argument error: #{e.message}" }, status: :bad_request
