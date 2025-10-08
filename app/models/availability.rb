@@ -23,6 +23,12 @@ class Availability < ApplicationRecord
     if from.to_date == to.to_date
       where(start_day_of_week: from.wday..to.wday, starts_at_time: from.strftime("%H:%M")..to.strftime("%H:%M"))
     end
+
+    # Multiple days case
+    midnight = Time.zone.parse("#{from.to_date.strftime("%Y-%m-%d")} 00:00:00")
+
+    where(start_day_of_week: from.wday..to.wday, starts_at_time: from.strftime("%H:%M")..midnight)
+      .or(where(start_day_of_week: 0..to.wday, starts_at_time: from.strftime("%H:%M")..midnight))
   end
 
   private
