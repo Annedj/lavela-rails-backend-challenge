@@ -11,6 +11,20 @@ class Availability < ApplicationRecord
   validate :start_time_before_end_time
   validate :start_day_of_week_before_end_day_of_week
 
+  def self.within_range(from, to)
+    return none if from.blank? || to.blank?
+
+    from_wday = from.wday
+    to_wday = to.wday
+    from_time = from.strftime("%H:%M")
+    to_time = to.strftime("%H:%M")
+
+    # Same day case
+    if from.to_date == to.to_date
+      where(start_day_of_week: from.wday..to.wday, starts_at_time: from.strftime("%H:%M")..to.strftime("%H:%M"))
+    end
+  end
+
   private
 
   def start_time_before_end_time

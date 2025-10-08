@@ -9,13 +9,7 @@ module Providers
         from = Time.zone.parse(params[:from])
         to = Time.zone.parse(params[:to])
 
-        availabilities = Availability.where(
-          provider_id: params[:provider_id],
-          start_day_of_week: from.wday..to.wday,
-          starts_at_time: from.strftime("%H:%M")..to.strftime("%H:%M")
-        )
-
-        render json: availabilities, status: :ok
+        render json: Availability.where(provider_id: params[:provider_id]).within_range(from, to).order(:starts_at_time), status: :ok
       rescue ArgumentError => e
         render json: { error: "Argument error: #{e.message}" }, status: :bad_request
       end

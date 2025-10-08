@@ -23,6 +23,11 @@ FactoryBot.define do
       end_day_of_week { 3 }
     end
 
+    trait :friday do
+      start_day_of_week { 5 }
+      end_day_of_week { 5 }
+    end
+
     trait :monday do
       start_day_of_week { 1 }
       end_day_of_week { 1 }
