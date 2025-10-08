@@ -14,21 +14,41 @@ class Availability < ApplicationRecord
   def self.within_range(from, to)
     return none if from.blank? || to.blank?
 
-    from_wday = from.wday
-    to_wday = to.wday
-    from_time = from.strftime("%H:%M")
-    to_time = to.strftime("%H:%M")
-
     # Same day case
     if from.to_date == to.to_date
-      where(start_day_of_week: from.wday..to.wday, starts_at_time: from.strftime("%H:%M")..to.strftime("%H:%M"))
+      return where(start_day_of_week: from.wday, end_day_of_week: from.wday)
+             .where("strftime('%H:%M', starts_at_time) >= ?", from.strftime("%H:%M"))
+             .where("strftime('%H:%M', ends_at_time) <= ?", to.strftime("%H:%M"))
     end
 
-    # Multiple days case
-    midnight = Time.zone.parse("#{from.to_date.strftime("%Y-%m-%d")} 00:00:00")
+    # Case for multiple days
+    current = from
+    conditions = []
 
-    where(start_day_of_week: from.wday..to.wday, starts_at_time: from.strftime("%H:%M")..midnight)
-      .or(where(start_day_of_week: 0..to.wday, starts_at_time: from.strftime("%H:%M")..midnight))
+    while current < to
+      wday = current.wday
+
+      if current.to_date == from.to_date
+        conditions << sanitize_sql_array([
+          "(start_day_of_week = ? AND end_day_of_week >= ? AND starts_at_time >= ? AND ends_at_time > ?)",
+          wday, wday, from.strftime("%H:%M"), from.strftime("%H:%M")
+        ])
+      elsif current.to_date == to.to_date
+        conditions << sanitize_sql_array([
+          "(start_day_of_week <= ? AND end_day_of_week = ? AND starts_at_time < ? AND ends_at_time <= ?)",
+          wday, wday, to.strftime("%H:%M"), to.strftime("%H:%M")
+        ])
+      else
+        conditions << sanitize_sql_array([
+          "(start_day_of_week <= ? AND end_day_of_week >= ?)",
+          wday, wday
+        ])
+      end
+
+      current = current.beginning_of_day + 1.day
+    end
+
+    where(conditions.join(" OR "))
   end
 
   private
